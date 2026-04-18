@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle | Consultora Tres Valles</title>
+
+  <!-- CSS del detalle -->
+  <link rel="stylesheet" href="detalle.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+  <header class="detail-header">
+    <a href="index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Volver al inicio</span>
+    </a>
+  </header>
+
+  <main>
+    <!-- =========================
+         CABECERA
+    ========================== -->
+    <section class="detail-top">
+      <p class="detail-badge" id="categoryBadge">Categoría</p>
+      <h1 id="categoryTitle">Explora nuestras opciones</h1>
+      <p class="detail-subtitle" id="categorySubtitle">
+        Selecciona una tarjeta del carrusel para revisar sus detalles.
+      </p>
+    </section>
+
+    <!-- =========================
+         CARRUSEL
+    ========================== -->
+    <section class="carousel-section">
+      <div class="carousel-shell">
+
+        <!-- Botón anterior -->
+        <button class="carousel-arrow" id="prevBtn" type="button" aria-label="Anterior">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Zona del carrusel -->
+        <div class="carousel-stage">
+          <div class="carousel-glow"></div>
+          <div class="carousel-ring"></div>
+          <div class="carousel-floor"></div>
+
+          <div class="carousel-viewport">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- JS inserta las cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón siguiente -->
+        <button class="carousel-arrow" id="nextBtn" type="button" aria-label="Siguiente">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators" id="carouselIndicators"></div>
+    </section>
+
+    <!-- =========================
+         INFORMACIÓN DINÁMICA
+    ========================== -->
+    <section class="info-section">
+      <div class="info-box" id="infoBox">
+        <div class="info-header">
+          <p class="info-mini-tag" id="infoMiniTag">Etiqueta</p>
+          <h2 id="infoTitle">Título del servicio</h2>
+          <p class="info-description" id="infoDescription">
+            Aquí irá la descripción principal del elemento seleccionado.
+          </p>
+        </div>
+
+        <div class="info-meta">
+          <div class="meta-card">
+            <i class="fa-regular fa-clock"></i>
+            <h3>Duración</h3>
+            <p id="infoDuration">-</p>
+          </div>
+
+          <div class="meta-card">
+            <i class="fa-solid fa-laptop"></i>
+            <h3>Modalidad</h3>
+            <p id="infoMode">-</p>
+          </div>
+
+          <div class="meta-card">
+            <i class="fa-solid fa-signal"></i>
+            <h3>Nivel</h3>
+            <p id="infoLevel">-</p>
+          </div>
+        </div>
+
+        <div class="info-benefits">
+          <h3>¿Qué obtendrás?</h3>
+          <ul id="infoBenefits"></ul>
+        </div>
+
+        <div class="info-actions">
+          <a
+            id="infoButton"
+            href="https://wa.me/56971486076"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="primary-btn"
+          >
+            Consultar ahora
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="detalle.js"></script>
+</body>
+</html>
