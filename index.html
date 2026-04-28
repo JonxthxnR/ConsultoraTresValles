@@ -4,209 +4,363 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO -->
-  <meta name="description" content="Cursos, asesorías y capacitaciones profesionales. Clases prácticas para impulsar tu desarrollo profesional.">
-  <meta name="keywords" content="cursos, asesorias, capacitacion, consultoria, tres valles">
+  <!-- =============================================
+       SEO PRIMARIO
+       Descripción enfocada en beneficio real.
+       Keywords: mínimas y relevantes (no spam).
+  ============================================= -->
+  <meta name="description" content="Consultora Tres Valles — Cursos, asesorías y capacitaciones profesionales en Chile. Aprende y crece con expertos reales.">
+  <meta name="robots" content="index, follow">
 
-  <!-- Open Graph completo -->
+  <!-- =============================================
+       OPEN GRAPH
+       og:image debe apuntar a URL absoluta en
+       producción para que previews funcionen.
+  ============================================= -->
   <meta property="og:title" content="Consultora Tres Valles">
   <meta property="og:description" content="Clases prácticas y asesorías reales para impulsar tu desarrollo profesional.">
-  <meta property="og:image" content="assets/logo/Logo.png">
+  <meta property="og:image" content="https://consultoratresvalles.cl/assets/logo/Logo.png">
   <meta property="og:url" content="https://consultoratresvalles.cl">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CL">
+
+  <!-- =============================================
+       TWITTER CARD (complementa OG)
+  ============================================= -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Consultora Tres Valles">
+  <meta name="twitter:description" content="Clases prácticas y asesorías reales para impulsar tu desarrollo profesional.">
+  <meta name="twitter:image" content="https://consultoratresvalles.cl/assets/logo/Logo.png">
 
   <title>Consultora Tres Valles</title>
 
+  <!-- =============================================
+       FUENTES — preconnect primero para reducir
+       latencia de la conexión a Google Fonts.
+  ============================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome — sin integridad (CDN cambia hashes); añadir SRI en producción -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<header class="header">
-  <div class="logo">
-    <img src="assets/logo/Logo-Sin-Letras.png" alt="Logo Consultora Tres Valles" class="logo-icon">
-  </div>
-  <img src="assets/logo/Letras-Logo.png" alt="Consultora Tres Valles" class="logo-text">
-  
-  <button class="menu-toggle" aria-label="Abrir menú">
-    <i class="fa-solid fa-bars" aria-hidden="true"></i>
-  </button>
+  <!-- =============================================
+       HEADER — role="banner" implícito en <header>
+       aria-label en nav para diferenciarlo si hay
+       más de un <nav> en la página.
+  ============================================= -->
+  <header class="header">
 
-  <nav class="nav" id="mainNav" aria-label="Navegación principal">
-    <a href="#inicio">Inicio</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#sobre-nosotros">Sobre nosotros</a>
-    <a href="#agendar">Agendar</a>
-  </nav>
-</header>
-
-<main>
-
-  <!-- HERO -->
-  <section class="hero reveal reveal-zoom" id="inicio">
-    <div class="hero-text">
-      <p class="hero-eyebrow">✦ Consultoría Estratégica</p>
-      <h1>Aprende, aplica<br>y crece 🚀</h1>
-      <p class="hero-sub">
-        Clases prácticas y asesorías reales para impulsar tu desarrollo profesional.
-      </p>
-      <div class="buttons">
-        <a href="#servicios" class="btn green">Cursos</a>
-        <a href="#agendar" class="btn blue">Solicitar asesoría</a>
-      </div>
+    <!-- Ícono izquierda: alt descriptivo del logo -->
+    <div class="logo">
+      <img
+        src="assets/logo/Logo-Sin-Letras.png"
+        alt="Ícono de Consultora Tres Valles"
+        class="logo-icon"
+        width="65"
+        height="65">
     </div>
-    <div class="hero-img">
-      <div class="hero-img-wrapper">
-        <!-- Sin lazy: imagen visible de inmediato al cargar -->
-        <img src="assets/images/Hero.png"
-          alt="Equipo de Consultora Tres Valles"
-          class="hero-img-real"
-          width="420"
-          height="420">
-        <div class="hero-stat-card">
-          <span class="hero-stat-num">+320</span>
-          <span class="hero-stat-label">Clientes asesorados</span>
+
+    <!-- Texto del logo centrado vía CSS absolute -->
+    <img
+      src="assets/logo/Letras-Logo.png"
+      alt="Consultora Tres Valles"
+      class="logo-text"
+      width="180"
+      height="45">
+
+    <!-- Botón hamburguesa: aria-expanded gestionado por JS -->
+    <button
+      class="menu-toggle"
+      aria-label="Abrir menú de navegación"
+      aria-expanded="false"
+      aria-controls="mainNav">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <!-- Nav principal -->
+    <nav class="nav" id="mainNav" aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#sobre-nosotros">Sobre nosotros</a>
+      <a href="#agendar">Agendar</a>
+    </nav>
+
+  </header>
+
+  <main>
+
+    <!-- =============================================
+         HERO
+         - h1 único en la página
+         - stat-cards con role="img" + aria-label
+           para que lectores de pantalla las anuncien
+           como una unidad de información
+    ============================================= -->
+    <section class="hero reveal reveal-zoom" id="inicio" aria-labelledby="hero-heading">
+      <div class="hero-text">
+        <p class="hero-eyebrow" aria-hidden="true">✦ Consultoría Estratégica</p>
+        <h1 id="hero-heading">Aprende, aplica<br>y crece 🚀</h1>
+        <p class="hero-sub">
+          Clases prácticas y asesorías reales para impulsar tu desarrollo profesional.
+        </p>
+        <div class="buttons">
+          <a href="#servicios" class="btn green">Cursos</a>
+          <a href="#agendar" class="btn blue">Solicitar asesoría</a>
         </div>
-        <div class="hero-stat-card hero-stat-card--2">
-          <span class="hero-stat-num">98%</span>
-          <span class="hero-stat-label">Satisfacción</span>
+      </div>
+
+      <div class="hero-img">
+        <div class="hero-img-wrapper">
+          <!--
+            Sin loading="lazy": imagen above-the-fold,
+            debe cargar inmediatamente (LCP).
+            fetchpriority="high" sugiere al navegador
+            que la priorice en el orden de carga.
+          -->
+          <img
+            src="assets/images/Hero.png"
+            alt="Equipo de Consultora Tres Valles en sesión de trabajo"
+            class="hero-img-real"
+            width="420"
+            height="420"
+            fetchpriority="high">
+
+          <!-- Tarjeta stat 1 — accesible como figura -->
+          <figure
+            class="hero-stat-card"
+            aria-label="Más de 320 clientes asesorados">
+            <span class="hero-stat-num" aria-hidden="true">+320</span>
+            <figcaption class="hero-stat-label">Clientes asesorados</figcaption>
+          </figure>
+
+          <!-- Tarjeta stat 2 -->
+          <figure
+            class="hero-stat-card hero-stat-card--2"
+            aria-label="98% de satisfacción">
+            <span class="hero-stat-num" aria-hidden="true">98%</span>
+            <figcaption class="hero-stat-label">Satisfacción</figcaption>
+          </figure>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- QUIENES SOMOS -->
-  <section class="about reveal reveal-left" id="sobre-nosotros">
-    <div class="about-box">
-      <i class="fa-solid fa-users about-icon" aria-hidden="true"></i>
-      <h2>¿Quiénes somos?</h2>
-      <p>
-        Somos un equipo que combina clases prácticas con asesorías reales
-        que impulsan tu crecimiento profesional y financiero.
+    <!-- =============================================
+         QUIÉNES SOMOS
+         aria-labelledby vincula la sección a su h2
+    ============================================= -->
+    <section class="about reveal reveal-left" id="sobre-nosotros" aria-labelledby="about-heading">
+      <div class="about-box">
+        <i class="fa-solid fa-users about-icon" aria-hidden="true"></i>
+        <h2 id="about-heading">¿Quiénes somos?</h2>
+        <p>
+          Somos un equipo que combina clases prácticas con asesorías reales
+          que impulsan tu crecimiento profesional y financiero.
+        </p>
+      </div>
+    </section>
+
+    <!-- =============================================
+         SERVICIOS
+         Tarjetas con role semántico correcto:
+         <article> es apropiado para contenido
+         independiente y reutilizable.
+    ============================================= -->
+    <section class="services reveal reveal-up" id="servicios" aria-labelledby="services-heading">
+      <h2 id="services-heading">Nuestros Servicios</h2>
+      <div class="cards">
+
+        <article class="card">
+          <img
+            src="assets/images/Clases.png"
+            alt="Persona tomando clases prácticas"
+            loading="lazy"
+            width="220"
+            height="140">
+          <h3>Clases</h3>
+          <a href="detalle.html?tipo=cursos" class="service-btn">Ver más</a>
+        </article>
+
+        <article class="card">
+          <img
+            src="assets/images/Asesorias.png"
+            alt="Profesional brindando asesoría personalizada"
+            loading="lazy"
+            width="220"
+            height="140">
+          <h3>Asesorías</h3>
+          <a href="detalle.html?tipo=asesorias" class="service-btn">Ver más</a>
+        </article>
+
+        <article class="card">
+          <img
+            src="assets/images/Capacitacion.png"
+            alt="Equipo participando en capacitación grupal"
+            loading="lazy"
+            width="220"
+            height="140">
+          <h3>Capacitaciones</h3>
+          <a href="detalle.html?tipo=capacitaciones" class="service-btn">Ver más</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         BENEFICIOS
+         Los íconos de Font Awesome son decorativos
+         → aria-hidden="true" en todos.
+         Los <p> de título deberían ser <h3> para
+         mantener jerarquía semántica correcta.
+    ============================================= -->
+    <section class="benefits reveal reveal-right" aria-labelledby="benefits-heading">
+      <h2 id="benefits-heading">¿Por qué elegirnos?</h2>
+      <div class="benefits-container">
+
+        <div class="benefit">
+          <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+          <h3 class="benefit-title">Enfoque práctico</h3>
+          <p class="benefit-desc">Aprendizaje basado en casos y situaciones reales de tu contexto.</p>
+        </div>
+
+        <div class="benefit">
+          <i class="fa-solid fa-user-check" aria-hidden="true"></i>
+          <h3 class="benefit-title">Expertos reales</h3>
+          <p class="benefit-desc">Profesionales con experiencia activa en el mundo de los negocios.</p>
+        </div>
+
+        <div class="benefit">
+          <i class="fa-solid fa-handshake" aria-hidden="true"></i>
+          <h3 class="benefit-title">Atención personalizada</h3>
+          <p class="benefit-desc">Cada cliente recibe acompañamiento adaptado a sus necesidades.</p>
+        </div>
+
+        <div class="benefit">
+          <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+          <h3 class="benefit-title">Resultados aplicables</h3>
+          <p class="benefit-desc">Todo lo que aprendes puedes usarlo desde el primer día.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         TESTIMONIOS
+         <blockquote> es el elemento semántico
+         correcto para citas textuales.
+         <cite> identifica al autor.
+    ============================================= -->
+    <section class="testimonials reveal reveal-left" aria-labelledby="testimonials-heading">
+      <h2 id="testimonials-heading">Testimonios</h2>
+      <div class="chat-testimonials">
+
+        <figure class="chat-bubble left">
+          <blockquote>
+            <p>Gracias a ellos entendí mejor mis impuestos y pude organizar mis finanzas.</p>
+          </blockquote>
+          <figcaption class="bubble-author">María G.</figcaption>
+        </figure>
+
+        <figure class="chat-bubble right">
+          <blockquote>
+            <p>Aprendí demasiado de forma clara y práctica. Lo recomiendo 100%.</p>
+          </blockquote>
+          <figcaption class="bubble-author">Carlos R.</figcaption>
+        </figure>
+
+        <figure class="chat-bubble left">
+          <blockquote>
+            <p>El equipo es increíble. Muy atentos y siempre disponibles para ayudar.</p>
+          </blockquote>
+          <figcaption class="bubble-author">Valentina S.</figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- =============================================
+         AGENDA
+         El <a> externo a WhatsApp ya tiene
+         rel="noopener noreferrer" — correcto.
+    ============================================= -->
+    <section class="agenda reveal reveal-zoom" id="agendar" aria-labelledby="agenda-heading">
+      <h2 id="agenda-heading">Agenda tu hora</h2>
+      <p class="agenda-subtitle">
+        Reserva una asesoría o clase en pocos pasos, de forma rápida y sencilla.
       </p>
-    </div>
-  </section>
+      <div class="agenda-card">
+        <div class="agenda-icon" aria-hidden="true">
+          <i class="fa-regular fa-calendar-days"></i>
+        </div>
+        <h3>Reserva en línea</h3>
+        <p class="agenda-text">
+          Elige el horario que más te acomode y coordina tu atención con nosotros.
+        </p>
+        <a
+          href="https://wa.me/56971486076"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="agenda-btn"
+          aria-label="Reservar hora por WhatsApp (abre en nueva pestaña)">
+          Reservar ahora
+        </a>
+        <p class="agenda-note">Agenda fácil y rápida</p>
+      </div>
+    </section>
 
-  <!-- SERVICIOS -->
-  <section class="services reveal reveal-up" id="servicios">
-    <h2>Nuestros Servicios</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="assets/images/Clases.png"
-          alt="Clases prácticas"
-          loading="lazy"
-          width="220"
-          height="140">
-        <h3>Clases</h3>
-        <a href="detalle.html?tipo=cursos" class="service-btn">Ver más</a>
-      </div>
-      <div class="card">
-        <img src="assets/images/Asesorias.png"
-          alt="Asesorías personalizadas"
-          loading="lazy"
-          width="220"
-          height="140">
-        <h3>Asesorías</h3>
-        <a href="detalle.html?tipo=asesorias" class="service-btn">Ver más</a>
-      </div>
-      <div class="card">
-        <img src="assets/images/Capacitacion.png"
-          alt="Capacitaciones para equipos"
-          loading="lazy"
-          width="220"
-          height="140">
-        <h3>Capacitaciones</h3>
-        <a href="detalle.html?tipo=capacitaciones" class="service-btn">Ver más</a>
-      </div>
-    </div>
-  </section>
+  </main>
 
-  <!-- BENEFICIOS -->
-  <section class="benefits reveal reveal-right">
-    <h2>¿Por qué elegirnos?</h2>
-    <div class="benefits-container">
-      <div class="benefit">
-        <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
-        <p class="benefit-title">Enfoque práctico</p>
-        <p class="benefit-desc">Aprendizaje basado en casos y situaciones reales de tu contexto.</p>
-      </div>
-      <div class="benefit">
-        <i class="fa-solid fa-user-check" aria-hidden="true"></i>
-        <p class="benefit-title">Expertos reales</p>
-        <p class="benefit-desc">Profesionales con experiencia activa en el mundo de los negocios.</p>
-      </div>
-      <div class="benefit">
-        <i class="fa-solid fa-handshake" aria-hidden="true"></i>
-        <p class="benefit-title">Atención personalizada</p>
-        <p class="benefit-desc">Cada cliente recibe acompañamiento adaptado a sus necesidades.</p>
-      </div>
-      <div class="benefit">
-        <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
-        <p class="benefit-title">Resultados aplicables</p>
-        <p class="benefit-desc">Todo lo que aprendes puedes usarlo desde el primer día.</p>
-      </div>
-    </div>
-  </section>
+  <!-- =============================================
+       FOOTER FIJO — role="contentinfo" implícito
+       en <footer> al ser hijo de <body>.
+       Los aria-label de cada botón social son
+       descriptivos: nombre + acción + destino.
+  ============================================= -->
+  <footer class="footer-fixed" role="contentinfo">
 
-  <!-- TESTIMONIOS -->
-  <section class="testimonials reveal reveal-left">
-    <h2>Testimonios</h2>
-    <div class="chat-testimonials">
-      <div class="chat-bubble left">
-        <p class="bubble-author">María G.</p>
-        "Gracias a ellos entendí mejor mis impuestos y pude organizar mis finanzas."
-      </div>
-      <div class="chat-bubble right">
-        <p class="bubble-author">Carlos R.</p>
-        "Aprendí demasiado de forma clara y práctica. Lo recomiendo 100%."
-      </div>
-      <div class="chat-bubble left">
-        <p class="bubble-author">Valentina S.</p>
-        "El equipo es increíble. Muy atentos y siempre disponibles para ayudar."
-      </div>
-    </div>
-  </section>
+    <a
+      href="https://wa.me/56971486076"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="social social-wsp"
+      aria-label="Contáctanos por WhatsApp: +56 9 7148 6076 (abre en nueva pestaña)">
+      <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+      <span>+56 9 7148 6076</span>
+    </a>
 
-  <!-- AGENDA -->
-  <section class="agenda reveal reveal-zoom" id="agendar">
-    <h2>Agenda tu hora</h2>
-    <p class="agenda-subtitle">
-      Reserva una asesoría o clase en pocos pasos, de forma rápida y sencilla.
-    </p>
-    <div class="agenda-card">
-      <div class="agenda-icon">
-        <i class="fa-regular fa-calendar-days" aria-hidden="true"></i>
-      </div>
-      <h3>Reserva en línea</h3>
-      <p class="agenda-text">
-        Elige el horario que más te acomode y coordina tu atención con nosotros.
-      </p>
-      <a href="https://wa.me/56971486076" target="_blank" rel="noopener noreferrer" class="agenda-btn">
-        Reservar ahora
-      </a>
-      <p class="agenda-note">Agenda fácil y rápida</p>
-    </div>
-  </section>
+    <a
+      href="https://instagram.com/consultoratresvalles"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="social social-ig"
+      aria-label="Síguenos en Instagram: @consultoratresvalles (abre en nueva pestaña)">
+      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+      <span>@consultoratresvalles</span>
+    </a>
 
-</main>
+    <a
+      href="mailto:3valles.consultora@gmail.com"
+      class="social social-gmail"
+      aria-label="Envíanos un correo a 3valles.consultora@gmail.com">
+      <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+      <span>3valles.consultora@gmail.com</span>
+    </a>
 
-<!-- FOOTER -->
-<footer class="footer-fixed">
-  <a href="https://wa.me/56971486076" target="_blank" rel="noopener noreferrer" class="social social-wsp" aria-label="WhatsApp">
-    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-    <span>+56 9 7148 6076</span>
-  </a>
-  <a href="https://instagram.com/consultoratresvalles" target="_blank" rel="noopener noreferrer" class="social social-ig" aria-label="Instagram">
-    <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-    <span>@consultoratresvalles</span>
-  </a>
-  <a href="mailto:3valles.consultora@gmail.com" class="social social-gmail" aria-label="Email">
-    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-    <span>3valles.consultora@gmail.com</span>
-  </a>
-</footer>
+  </footer>
 
-<script src="script.js"></script>
+  <!-- script al final del body: bloqueo de render nulo -->
+  <script src="script.js"></script>
+
 </body>
 </html>

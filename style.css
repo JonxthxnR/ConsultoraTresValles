@@ -1,167 +1,223 @@
-/* =========================
-   SCROLL SUAVE
-========================= */
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-}
+/* ============================================================
+   style.css — Consultora Tres Valles
+   Estilos principales del index.html.
 
-* {
-  box-sizing: border-box;
-  max-width: 100%;
-}
- 
-/* =========================
-   VARIABLES
-========================= */
+   ÍNDICE
+   1.  Variables
+   2.  Keyframes
+   3.  Reset y base
+   4.  Tipografía global
+   5.  Scroll reveal
+   6.  Scroll margins
+   7.  Header
+   8.  Botón hamburguesa
+   9.  Logo
+   10. Nav
+   11. Hero — layout y texto
+   12. Hero — imagen y stat-cards
+   13. Sección "Quiénes somos"
+   14. Secciones generales
+   15. Servicios — cards
+   16. Beneficios
+   17. Testimonios
+   18. Agenda
+   19. Footer fijo y botones sociales
+   20. Scrollbar
+   21. Focus visible (accesibilidad de teclado)
+   22. Modo oscuro (prefers-color-scheme)
+   23. Responsive — tablet  (≤ 992px)
+   24. Responsive — móvil   (≤ 768px)
+   25. Responsive — móvil S (≤ 480px)
+============================================================ */
+
+
+/* ============================================================
+   1. VARIABLES
+============================================================ */
 :root {
-  --primary: #3aa882;
-  --primary-dark: #2a8a68;
- 
-  --secondary: #1e88c8;
+  --primary:       #3aa882;
+  --primary-dark:  #2a8a68;
+
+  --secondary:      #1e88c8;
   --secondary-dark: #1568a0;
- 
-  --bg: #d6eee5;
+
+  --bg:     #d6eee5;
   --bg-soft: #cce8f0;
- 
-  --text: #0d2218;
-  --text-soft: rgba(13,34,24,0.6);
- 
+
+  --text:      #0d2218;
+  --text-soft: rgba(13, 34, 24, 0.6);
+
   --white: #ffffff;
- 
+
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 24px;
- 
-  --shadow-soft: 0 6px 18px rgba(0,0,0,.08);
-  --shadow-md: 0 10px 30px rgba(0,0,0,.1);
-  --shadow-strong: 0 16px 40px rgba(0,0,0,.14);
- 
-  --transition: all .3s ease;
+
+  --shadow-soft:   0 6px 18px rgba(0, 0, 0, 0.08);
+  --shadow-md:     0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-strong: 0 16px 40px rgba(0, 0, 0, 0.14);
+
+  --transition: all 0.3s ease;
 }
- 
-/* =========================
-   GRADIENTE ANIMADO
-========================= */
+
+
+/* ============================================================
+   2. KEYFRAMES
+============================================================ */
 @keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
+  0%   { background-position: 0%   50%; }
   50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  100% { background-position: 0%   50%; }
 }
- 
-/* =========================
-   BASE GENERAL
-========================= */
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+
+/* ============================================================
+   3. RESET Y BASE
+   max-width:100% en * cubre todos los elementos hijos,
+   por lo que no hace falta repetirlo en html, body,
+   section, .hero, etc. Se eliminan las repeticiones.
+============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
-  font-family: 'Outfit', Arial, sans-serif;
   margin: 0;
   padding: 0;
   padding-bottom: 110px;
+  font-family: 'Outfit', Arial, sans-serif;
   background: linear-gradient(135deg, #b8dfd0, #b8daf0, #c5e8d8, #aed4ec);
   background-size: 400% 400%;
   animation: gradientShift 10s ease infinite;
   color: var(--text);
   overflow-x: hidden;
   width: 100%;
-  max-width: 100%;
-} 
- 
-h1, h2, h3 {
-  margin-top: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
 }
- 
-h2 {
-  font-size: 42px;
-  color: var(--text);
-}
- 
-h3 {
-  font-size: 22px;
-  color: var(--text);
-}
- 
+
 img {
   user-select: none;
   max-width: 100%;
   height: auto;
   display: block;
 }
- 
-/* =========================
-   REVEAL AL HACER SCROLL
-========================= */
+
+
+/* ============================================================
+   4. TIPOGRAFÍA GLOBAL
+============================================================ */
+h1, h2, h3 {
+  margin-top: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+h2 {
+  font-size: 42px;
+  color: var(--text);
+}
+
+h3 {
+  font-size: 22px;
+  color: var(--text);
+}
+
+
+/* ============================================================
+   5. SCROLL REVEAL
+   Las clases .reveal-* definen el estado inicial (oculto).
+   El JS añade .active para transicionar al estado final.
+============================================================ */
 .reveal {
   opacity: 0;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
- 
+
 .reveal.active { opacity: 1; }
- 
-.reveal-up { transform: translateY(40px); }
-.reveal-up.active { transform: translateY(0); }
- 
-.reveal-left { transform: translateX(-60px); }
-.reveal-left.active { transform: translateX(0); }
- 
-.reveal-right { transform: translateX(60px); }
-.reveal-right.active { transform: translateX(0); }
- 
-.reveal-zoom { transform: scale(0.92); }
-.reveal-zoom.active { transform: scale(1); }
- 
-section { 
+
+.reveal-up            { transform: translateY(40px); }
+.reveal-up.active     { transform: translateY(0); }
+
+.reveal-left          { transform: translateX(-60px); }
+.reveal-left.active   { transform: translateX(0); }
+
+.reveal-right         { transform: translateX(60px); }
+.reveal-right.active  { transform: translateX(0); }
+
+.reveal-zoom          { transform: scale(0.92); }
+.reveal-zoom.active   { transform: scale(1); }
+
+
+/* ============================================================
+   6. SCROLL MARGINS
+   Compensan la altura del header fijo al navegar
+   por anclas internas. Valores ajustados por sección.
+============================================================ */
+section {
   scroll-margin-top: 90px;
-  width: 100%;
-  max-width: 100%;
+  /*
+   * width/max-width/box-sizing se omiten aquí:
+   * ya los cubre el reset * del bloque 3.
+   */
 }
-#inicio { scroll-margin-top: 120px; }
-#agendar { scroll-margin-top: 10px; }
+
+#inicio   { scroll-margin-top: 120px; }
 #servicios { scroll-margin-top: 45px; }
- 
-/* =========================
-   HEADER
-========================= */
-/* Busca esto en tu style.css y reemplázalo completo */
+#agendar  { scroll-margin-top: 10px; }
+
+
+/* ============================================================
+   7. HEADER
+============================================================ */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 32px;
-  background: rgba(255,255,255,0.55);
-  
-  /* ESTA ES LA MAGIA: Cambiamos sticky por fixed */
   position: fixed;
   top: 0;
   left: 0;
-  
-  z-index: 1000;
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(58,168,130,0.15);
-  transition: var(--transition);
   width: 100%;
-  max-width: 100%;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px); /* Safari */
+  border-bottom: 1px solid rgba(58, 168, 130, 0.15);
+  transition: var(--transition);
 }
- 
+
 .header.scrolled {
-  background: rgba(255,255,255,0.82);
+  background: rgba(255, 255, 255, 0.82);
   box-shadow: var(--shadow-soft);
 }
 
-/* =========================
-   BOTÓN HAMBURGUESA (Oculto en PC)
-========================= */
+
+/* ============================================================
+   8. BOTÓN HAMBURGUESA
+   Oculto en desktop, visible en móvil (≤ 768px).
+   El JS gestiona aria-expanded y el cambio de ícono.
+============================================================ */
 .menu-toggle {
-  display: none; /* Se oculta en PC */
+  display: none;
   background: transparent;
   border: none;
   font-size: 28px;
   color: var(--text);
   cursor: pointer;
-  z-index: 2000; /* Siempre por encima del menú abierto */
+  z-index: 2000; /* Siempre por encima del menú fullscreen */
   padding: 5px;
   transition: var(--transition);
 }
@@ -170,9 +226,17 @@ section {
   color: var(--primary);
 }
 
-/* =========================
-   LOGO DIVIDIDO
-========================= */
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ============================================================
+   9. LOGO DIVIDIDO
+   Ícono a la izquierda, texto centrado vía absolute.
+============================================================ */
 .logo {
   display: flex;
   align-items: center;
@@ -190,13 +254,20 @@ section {
   height: 45px;
   width: auto;
 }
- 
+
+
+/* ============================================================
+   10. NAV
+   Desktop: flex horizontal en el header.
+   Móvil: fullscreen overlay con entrada desde arriba.
+   La transición es gestionada por el JS (clase .active).
+============================================================ */
 .nav {
   display: flex;
   gap: 25px;
   align-items: center;
 }
- 
+
 .nav a {
   text-decoration: none;
   color: var(--text);
@@ -205,14 +276,15 @@ section {
   font-family: 'Outfit', Arial, sans-serif;
   transition: color 0.3s ease;
 }
- 
+
 .nav a:hover {
   color: var(--primary);
 }
- 
-/* =========================
-   HERO
-========================= */
+
+
+/* ============================================================
+   11. HERO — LAYOUT Y TEXTO
+============================================================ */
 .hero {
   display: flex;
   justify-content: space-between;
@@ -220,11 +292,8 @@ section {
   gap: 60px;
   padding: 90px 60px;
   background: transparent;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
- 
+
 .hero-eyebrow {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 12px;
@@ -234,12 +303,12 @@ section {
   color: var(--primary);
   margin: 0 0 14px;
 }
- 
+
 .hero-text {
   max-width: 560px;
   text-align: left;
 }
- 
+
 .hero-text h1 {
   font-size: 58px;
   margin-bottom: 16px;
@@ -247,7 +316,7 @@ section {
   color: var(--text);
   font-weight: 700;
 }
- 
+
 .hero-sub {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 18px;
@@ -255,13 +324,13 @@ section {
   margin-bottom: 32px;
   line-height: 1.75;
 }
- 
+
 .buttons {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
- 
+
 .btn {
   display: inline-block;
   padding: 13px 28px;
@@ -276,26 +345,39 @@ section {
   transition: var(--transition);
   box-shadow: var(--shadow-soft);
 }
- 
+
 .green { background: var(--primary); }
 .blue  { background: var(--secondary); }
- 
+
 .btn:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: var(--shadow-md);
   filter: brightness(1.06);
 }
- 
-/* IMAGEN HERO con tarjetas de stat */
+
+
+/* ============================================================
+   12. HERO — IMAGEN Y STAT-CARDS
+============================================================ */
 .hero-img {
   flex-shrink: 0;
 }
- 
+
 .hero-img-wrapper {
   position: relative;
   display: inline-block;
 }
- 
+
+/** Viñeta sutil sobre la imagen */
+.hero-img-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.08) 100%);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
 .hero-img-real {
   width: 420px;
   max-width: 100%;
@@ -306,26 +388,18 @@ section {
   display: block;
   height: auto;
 }
- 
+
 .hero-img-real:hover {
   transform: scale(1.02);
 }
 
-.hero-img-wrapper::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.08) 100%);
-  border-radius: var(--radius-lg);
-  pointer-events: none;
-}
- 
-/* Tarjetas flotantes de stats */
+/** Tarjetas flotantes de estadísticas */
 .hero-stat-card {
   position: absolute;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(58,168,130,0.2);
+  -webkit-backdrop-filter: blur(12px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.2);
   border-radius: var(--radius-md);
   padding: 12px 18px;
   display: flex;
@@ -334,27 +408,24 @@ section {
   box-shadow: var(--shadow-md);
   animation: floatCard 4s ease-in-out infinite;
 }
- 
+
 .hero-stat-card--2 {
   animation-delay: 2s;
   animation-direction: alternate-reverse;
 }
- 
-@keyframes floatCard {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
-}
- 
+
+/** Posición tarjeta 1: abajo-izquierda */
 .hero-stat-card:first-of-type {
   bottom: 24px;
   left: -24px;
 }
- 
+
+/** Posición tarjeta 2: arriba-derecha */
 .hero-stat-card--2 {
   top: 24px;
   right: -24px;
 }
- 
+
 .hero-stat-num {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
@@ -362,7 +433,7 @@ section {
   color: var(--primary);
   line-height: 1;
 }
- 
+
 .hero-stat-label {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 11px;
@@ -370,49 +441,49 @@ section {
   margin-top: 3px;
   white-space: nowrap;
 }
- 
-/* =========================
-   QUIÉNES SOMOS
-========================= */
+
+
+/* ============================================================
+   13. QUIÉNES SOMOS
+============================================================ */
 .about {
   padding: 90px 20px;
   background: transparent;
   display: flex;
   justify-content: center;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
- 
+
 .about-box {
   max-width: 720px;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(58,168,130,0.2);
+  -webkit-backdrop-filter: blur(16px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.2);
   padding: 48px;
   border-radius: var(--radius-lg);
   text-align: center;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
 }
- 
+
 .about-box:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-strong);
 }
- 
+
 .about-icon {
   font-size: 42px;
   color: var(--primary);
   margin-bottom: 14px;
 }
- 
+
 .about-box h2 {
   font-size: 42px;
   margin-bottom: 15px;
   color: var(--text);
 }
- 
+
+/** Línea decorativa bajo el h2 */
 .about-box h2::after {
   content: "";
   display: block;
@@ -422,42 +493,44 @@ section {
   margin: 10px auto 0;
   border-radius: 2px;
 }
- 
+
 .about-box p {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 17px;
   color: var(--text-soft);
   line-height: 1.75;
 }
- 
-/* =========================
-   SECCIONES GENERALES
-========================= */
+
+
+/* ============================================================
+   14. SECCIONES GENERALES
+   Padding y alineación base para todas las secciones.
+   Las secciones específicas pueden sobreescribirlos
+   sin necesidad de !important gracias a la especificidad
+   del selector de clase (.hero, .about, etc.).
+============================================================ */
 section {
   padding: 70px 20px;
   text-align: center;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
- 
-/* =========================
-   SERVICIOS — CARDS
-========================= */
+
+
+/* ============================================================
+   15. SERVICIOS — CARDS
+============================================================ */
 .cards {
   display: flex;
   justify-content: center;
   gap: 28px;
   flex-wrap: wrap;
   margin-top: 32px;
-  width: 100%;
-  max-width: 100%;
 }
- 
+
 .card {
-  background: rgba(255,255,255,0.62);
+  background: rgba(255, 255, 255, 0.62);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(58,168,130,0.18);
+  -webkit-backdrop-filter: blur(14px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.18);
   border-radius: var(--radius-lg);
   overflow: hidden;
   width: 220px;
@@ -465,28 +538,28 @@ section {
   transition: var(--transition);
   box-shadow: var(--shadow-soft);
 }
- 
+
 .card img {
   width: 100%;
   height: 140px;
   object-fit: cover;
-  border-bottom: 1px solid rgba(58,168,130,0.1);
+  border-bottom: 1px solid rgba(58, 168, 130, 0.1);
   display: block;
 }
- 
+
 .card h3 {
   margin: 16px 0 12px;
   color: var(--text);
   font-size: 22px;
 }
- 
+
 .card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: var(--shadow-strong);
-  border-color: rgba(58,168,130,0.4);
-  background: rgba(255,255,255,0.82);
+  border-color: rgba(58, 168, 130, 0.4);
+  background: rgba(255, 255, 255, 0.82);
 }
- 
+
 .service-btn {
   display: inline-block;
   margin-bottom: 16px;
@@ -500,43 +573,43 @@ section {
   font-size: 14px;
   transition: var(--transition);
 }
- 
+
 .service-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
 }
- 
-/* =========================
-   BENEFICIOS
-========================= */
+
+
+/* ============================================================
+   16. BENEFICIOS
+============================================================ */
 .benefits-container {
   display: flex;
   justify-content: center;
   gap: 36px;
   margin-top: 36px;
   flex-wrap: wrap;
-  width: 100%;
-  max-width: 100%;
 }
- 
+
 .benefit {
   text-align: center;
   width: 200px;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(58,168,130,0.15);
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.15);
   border-radius: var(--radius-lg);
   padding: 28px 20px;
   transition: var(--transition);
 }
- 
+
 .benefit:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-md);
-  background: rgba(255,255,255,0.72);
-  border-color: rgba(58,168,130,0.35);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(58, 168, 130, 0.35);
 }
- 
+
 .benefit i {
   font-size: 36px;
   margin-bottom: 12px;
@@ -544,12 +617,12 @@ section {
   display: block;
   transition: transform 0.3s ease, color 0.3s ease;
 }
- 
+
 .benefit:hover i {
   transform: scale(1.18);
   color: var(--primary-dark);
 }
- 
+
 .benefit-title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 19px;
@@ -557,7 +630,7 @@ section {
   color: var(--text);
   margin: 0 0 8px;
 }
- 
+
 .benefit-desc {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 13px;
@@ -565,18 +638,19 @@ section {
   line-height: 1.6;
   margin: 0;
 }
- 
-/* =========================
-   TESTIMONIOS
-========================= */
+
+
+/* ============================================================
+   17. TESTIMONIOS
+   .chat-bubble usa <figure>+<blockquote>+<figcaption>
+   en el HTML refactorizado, pero los estilos son
+   compatible con la estructura anterior también.
+============================================================ */
 .testimonials {
   padding: 70px 20px;
   text-align: center;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
- 
+
 .chat-testimonials {
   max-width: 700px;
   margin: 32px auto 0;
@@ -585,7 +659,7 @@ section {
   gap: 24px;
   width: 100%;
 }
- 
+
 .chat-bubble {
   position: relative;
   max-width: 480px;
@@ -595,9 +669,8 @@ section {
   line-height: 1.6;
   box-shadow: var(--shadow-soft);
   font-family: 'Outfit', Arial, sans-serif;
-  box-sizing: border-box;
 }
- 
+
 .bubble-author {
   font-weight: 700;
   font-size: 12px;
@@ -606,15 +679,16 @@ section {
   opacity: 0.6;
   text-transform: uppercase;
 }
- 
+
 .chat-bubble.left {
   align-self: flex-start;
-  background: rgba(255,255,255,0.72);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(58,168,130,0.15);
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.15);
   color: var(--text);
 }
- 
+
 .chat-bubble.left::after {
   content: "";
   position: absolute;
@@ -622,20 +696,20 @@ section {
   bottom: -10px;
   width: 20px;
   height: 20px;
-  background: rgba(255,255,255,0.72);
+  background: rgba(255, 255, 255, 0.72);
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
- 
+
 .chat-bubble.right {
   align-self: flex-end;
   background: var(--primary);
   color: var(--white);
 }
- 
+
 .chat-bubble.right .bubble-author {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
- 
+
 .chat-bubble.right::after {
   content: "";
   position: absolute;
@@ -646,24 +720,33 @@ section {
   background: var(--primary);
   clip-path: polygon(0 0, 100% 100%, 100% 0);
 }
- 
-/* =========================
-   AGENDA
-========================= */
+
+/* Resetea márgenes internos del <blockquote> generado
+   por la refactorización del HTML */
+.chat-bubble blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+.chat-bubble blockquote p {
+  margin: 0;
+}
+
+
+/* ============================================================
+   18. AGENDA
+============================================================ */
 .agenda {
   padding: 90px 20px;
   text-align: center;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
 }
- 
+
 .agenda h2 {
   font-size: 42px;
   margin-bottom: 12px;
   color: var(--text);
 }
- 
+
 .agenda-subtitle {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 17px;
@@ -672,26 +755,26 @@ section {
   margin: 0 auto 40px;
   line-height: 1.75;
 }
- 
+
 .agenda-card {
   max-width: 500px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.62);
+  background: rgba(255, 255, 255, 0.62);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(58,168,130,0.18);
+  -webkit-backdrop-filter: blur(16px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.18);
   border-radius: var(--radius-xl);
   padding: 44px 32px;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  box-sizing: border-box;
 }
- 
+
 .agenda-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-strong);
-  background: rgba(255,255,255,0.78);
+  background: rgba(255, 255, 255, 0.78);
 }
- 
+
 .agenda-icon {
   width: 90px;
   height: 90px;
@@ -702,18 +785,18 @@ section {
   align-items: center;
   justify-content: center;
 }
- 
+
 .agenda-icon i {
   font-size: 38px;
   color: var(--white);
 }
- 
+
 .agenda-card h3 {
   font-size: 30px;
   margin-bottom: 12px;
   color: var(--text);
 }
- 
+
 .agenda-text {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 16px;
@@ -721,7 +804,7 @@ section {
   line-height: 1.65;
   margin-bottom: 28px;
 }
- 
+
 .agenda-btn {
   display: inline-block;
   background: var(--primary);
@@ -735,25 +818,28 @@ section {
   cursor: pointer;
   text-decoration: none;
   transition: var(--transition);
-  box-shadow: 0 4px 16px rgba(58,168,130,0.3);
+  box-shadow: 0 4px 16px rgba(58, 168, 130, 0.3);
 }
- 
+
 .agenda-btn:hover {
   background: var(--primary-dark);
   transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(58,168,130,0.4);
+  box-shadow: 0 8px 24px rgba(58, 168, 130, 0.4);
 }
- 
+
 .agenda-note {
   margin-top: 18px;
   color: var(--text-soft);
   font-size: 14px;
   font-family: 'Outfit', Arial, sans-serif;
 }
- 
-/* =========================
-   FOOTER FIJO
-========================= */
+
+
+/* ============================================================
+   19. FOOTER FIJO Y BOTONES SOCIALES
+   Desktop: píldoras expandibles con texto al hover.
+   Móvil (≤ 768px): barra compacta solo con íconos.
+============================================================ */
 .footer-fixed {
   position: fixed;
   left: 50%;
@@ -766,31 +852,32 @@ section {
   z-index: 1000;
   width: auto;
 }
- 
+
 .social {
   height: 52px;
   min-width: 52px;
   padding: 0 18px;
   border-radius: 999px;
-  background: rgba(13,34,24,0.82);
+  background: rgba(13, 34, 24, 0.82);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(58,168,130,0.25);
+  -webkit-backdrop-filter: blur(12px); /* Safari */
+  border: 1px solid rgba(58, 168, 130, 0.25);
   color: var(--white);
   display: flex;
   align-items: center;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.35s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   text-decoration: none;
 }
- 
+
 .social i {
   font-size: 22px;
   flex-shrink: 0;
   transition: all 0.35s ease;
 }
- 
+
 .social span {
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 14px;
@@ -798,34 +885,60 @@ section {
   opacity: 0;
   transition: all 0.35s ease;
 }
- 
-.social-wsp { width: 56px; justify-content: center; }
-.social-wsp span { width: 0; margin-left: 0; }
-.social-wsp:hover { width: 210px; justify-content: flex-start; background: rgba(31,42,31,0.95); border-color: rgba(58,168,130,0.5); }
-.social-wsp:hover span { width: auto; margin-left: 12px; opacity: 1; }
- 
-.social-gmail { width: 56px; justify-content: center; }
-.social-gmail span { max-width: 0; margin-left: 0; }
-.social-gmail:hover { width: 280px; background: rgba(42,20,20,0.95); border-color: rgba(200,80,60,0.4); }
-.social-gmail:hover span { max-width: 240px; margin-left: 12px; opacity: 1; }
- 
-.social-ig { width: 56px; justify-content: center; }
-.social-ig span { max-width: 0; margin-left: 0; }
-.social-ig:hover { width: 220px; background: linear-gradient(90deg, rgba(43,29,51,0.95), rgba(75,42,42,0.95)); border-color: rgba(180,80,150,0.4); }
-.social-ig:hover i { transform: rotate(-12deg) scale(1.15); }
-.social-ig:hover span { max-width: 180px; margin-left: 12px; opacity: 1; }
- 
-.social:hover i { transform: scale(1.08); }
-.social-ig:hover i { transform: rotate(-12deg) scale(1.15); }
-/* =========================
-   SCROLLBAR
-========================= */
-::-webkit-scrollbar { width: 8px; }
+
+/* WhatsApp */
+.social-wsp                { width: 56px; justify-content: center; }
+.social-wsp span           { width: 0; margin-left: 0; }
+.social-wsp:hover          { width: 210px; justify-content: flex-start; background: rgba(31, 42, 31, 0.95); border-color: rgba(58, 168, 130, 0.5); }
+.social-wsp:hover span     { width: auto; margin-left: 12px; opacity: 1; }
+
+/* Gmail */
+.social-gmail              { width: 56px; justify-content: center; }
+.social-gmail span         { max-width: 0; margin-left: 0; }
+.social-gmail:hover        { width: 280px; background: rgba(42, 20, 20, 0.95); border-color: rgba(200, 80, 60, 0.4); }
+.social-gmail:hover span   { max-width: 240px; margin-left: 12px; opacity: 1; }
+
+/* Instagram */
+.social-ig                 { width: 56px; justify-content: center; }
+.social-ig span            { max-width: 0; margin-left: 0; }
+.social-ig:hover           { width: 220px; background: linear-gradient(90deg, rgba(43, 29, 51, 0.95), rgba(75, 42, 42, 0.95)); border-color: rgba(180, 80, 150, 0.4); }
+.social-ig:hover span      { max-width: 180px; margin-left: 12px; opacity: 1; }
+
+/* Ícono genérico al hover */
+.social:hover i            { transform: scale(1.08); }
+
+/*
+ * Instagram sobreescribe el ícono genérico con rotación.
+ * Declarado una sola vez (el original lo tenía duplicado
+ * en líneas 815 y 819, la primera era letra muerta).
+ */
+.social-ig:hover i         { transform: rotate(-12deg) scale(1.15); }
+
+
+/* ============================================================
+   20. SCROLLBAR
+============================================================ */
+::-webkit-scrollbar       { width: 8px; }
 ::-webkit-scrollbar-track { background: #c8e6da; }
 ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
- 
 
-/* Focus visible para navegación por teclado */
+
+/* ============================================================
+   21. FOCUS VISIBLE — accesibilidad de teclado
+   Regla global de base + overrides por componente.
+   :focus:not(:focus-visible) elimina el outline en
+   clics con ratón sin afectar la navegación por teclado.
+============================================================ */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Overrides específicos donde el offset o radio cambia */
 .nav a:focus-visible,
 .btn:focus-visible,
 .service-btn:focus-visible,
@@ -835,198 +948,206 @@ section {
   outline-offset: 2px;
 }
 
-/* Para mejor contraste en modo oscuro */
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ============================================================
+   22. MODO OSCURO
+   Solo aplica al footer social por ahora.
+   Si se expande el modo oscuro, ampliar este bloque.
+============================================================ */
 @media (prefers-color-scheme: dark) {
   .social {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 
-/* =========================
-   RESPONSIVE TABLET
-========================= */
+
+/* ============================================================
+   23. RESPONSIVE — TABLET (≤ 992px)
+============================================================ */
 @media (max-width: 992px) {
-  .hero { padding: 60px 30px; gap: 30px; }
-  .hero-text h1 { font-size: 44px; }
+  .hero          { padding: 60px 30px; gap: 30px; }
+  .hero-text h1  { font-size: 44px; }
   .hero-img-real { width: 320px; }
-  .logo-img { height: 60px; }
-  .nav { gap: 18px; }
-  .hero-stat-card--2 { right: -10px; }
+  .nav           { gap: 18px; }
+
+  /* Reposicionamiento de stat-cards en tablet */
+  .hero-stat-card--2          { right: -10px; }
   .hero-stat-card:first-of-type { left: -10px; }
 }
- 
-/* =========================
-   RESPONSIVE CELULAR
-========================= */
+
+
+/* ============================================================
+   24. RESPONSIVE — MÓVIL (≤ 768px)
+   Se eliminan los !important del original resolviendo
+   la especificidad correctamente:
+   - section ya no tiene padding en el selector base
+     con box-sizing redundante, así que el padding de
+     móvil gana sin necesitar !important.
+   - Las stat-cards usan position:relative en vez de
+     sobrescribir con !important.
+============================================================ */
 @media (max-width: 768px) {
-  .header { flex-direction: row; gap: 10px; padding: 12px 20px; justify-content: space-between; }
-  .logo-img { height: 55px; }
+
+  /* Header */
+  .header {
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px 20px;
+    justify-content: space-between;
+  }
+
+  /* Hamburguesa visible */
   .menu-toggle { display: block; }
-  /* Transformamos el nav en una pantalla completa */
-  .nav { 
+
+  /* Nav fullscreen */
+  .nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Ocupa toda la pantalla */
-    background: rgba(255, 255, 255, 0.95); /* Fondo casi blanco */
-    backdrop-filter: blur(15px); /* Efecto vidrio */
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); /* Safari */
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 40px;
-    
-    /* Magia de la animación: Lo escondemos arriba de la pantalla */
     transform: translateY(-100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1500; /* Va debajo del botón hamburguesa pero encima del resto */
-  }
-  .nav.active{ transform: translateY(0); }
-  .nav a { font-size: 24px; font-weight: 700; }
-  .hero { flex-direction: column; text-align: center; padding: 50px 20px; }
-  .hero-text { text-align: center; }
-  .hero-text h1 { font-size: 36px; }
-  .hero-sub { font-size: 16px; }
-  .hero-img-real { width: 280px; margin-top: 10px; }
-  .hero-stat-card { display: none; }
-  .buttons { justify-content: center; }
-  .about-box { padding: 30px 20px; }
-  .about-box h2 { font-size: 32px; }
-  .about-box p { font-size: 15px; }
-  .cards { flex-direction: column; align-items: center; }
-  .card { width: 90%; max-width: 320px; }
-  .benefits-container { gap: 16px; }
-  .benefit { width: 45%; min-width: 140px; }
-  .chat-bubble { max-width: 88%; font-size: 15px; }
-  .agenda h2 { font-size: 32px; }
-  .agenda-subtitle { font-size: 15px; }
-  .agenda-card { padding: 30px 20px; }
-  .agenda-card h3 { font-size: 26px; }
-  .footer-fixed {
-    position: fixed; /* Lo mantenemos flotando */
-    bottom: 15px; /* Bien pegado abajito */
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content; /* Solo ocupa el ancho de los 3 botones */
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.85); /* Fondo blanco semitransparente */
-    backdrop-filter: blur(12px);
-    border-radius: 999px; /* Bien redondito */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Sombra elegante para que resalte */
-    z-index: 1000;
-    gap: 16px; /* Separación entre íconos */
-    margin: 0;
-  }
-  .social {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    padding: 0 !important;
-    justify-content: center !important;
-    background: transparent; /* Quitamos su fondo oscuro para que se vean más limpios */
-    border: none;
-    box-shadow: none;
-  }
-  .social span {
-    display: none !important; 
-  }
-  /* Coloreamos los íconos para que combinen con la cajita blanca */
-  .social-wsp i { color: #25D366; font-size: 28px; }
-  .social-ig i { color: #E1306C; font-size: 26px; }
-  .social-gmail i { color: #EA4335; font-size: 24px; }
-
-  /* =========================================
-     NIVEL 4: EL RESPIRO VISUAL Y TEXTOS
-  ========================================= */
-  
-  /* 1. Reducimos los espacios muertos entre secciones */
-  section {
-    padding: 50px 16px !important; 
+    z-index: 1500;
   }
 
-  /* 2. Apretamos el Hero para que el título no ocupe toda la pantalla */
+  .nav.active { transform: translateY(0); }
+  .nav a      { font-size: 24px; font-weight: 700; }
+
+  /* Hero */
   .hero {
-    padding: 110px 16px 40px !important;
+    flex-direction: column;
+    text-align: center;
+    padding: 110px 16px 40px;
     gap: 24px;
   }
 
-  .hero-text h1 {
-    font-size: 36px !important;
-    line-height: 1.15;
-    margin-bottom: 12px;
-  }
+  .hero-text      { text-align: center; }
+  .hero-text h1   { font-size: 36px; line-height: 1.15; margin-bottom: 12px; }
+  .hero-sub       { font-size: 16px; }
+  .hero-img-real  { width: 280px; margin-top: 10px; }
+  .buttons        { justify-content: center; }
 
-  /* 3. ¡Revivimos las tarjetas de estadísticas del Hero! 
-        En vez de flotar, las ponemos ordenaditas abajo de la foto */
+  /*
+   * Stat-cards: en móvil abandonan el posicionamiento
+   * absoluto y se apilan debajo de la imagen.
+   * Se reorganiza el wrapper con flex column.
+   */
   .hero-img-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px; /* Separación entre la foto y las tarjetas */
+    gap: 16px;
   }
 
   .hero-stat-card,
   .hero-stat-card--2 {
-    display: flex !important; /* Anulamos el display: none viejo */
-    position: relative !important; /* Dejan de flotar */
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    right: auto !important;
-    flex-direction: row; /* Número al lado del texto para ahorrar espacio */
+    display: flex;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    flex-direction: row;
     width: 100%;
     max-width: 280px;
     justify-content: center;
     gap: 12px;
     padding: 12px 16px;
-    animation: none !important; /* Quitamos la animación de flotar para no marear en celular */
+    animation: none; /* Sin flotado en móvil */
   }
 
-  .hero-stat-num { 
-    font-size: 24px; 
-  }
-  
-  .hero-stat-label { 
-    margin-top: 0; 
-    font-size: 14px; 
-    align-self: center; /* Centramos el texto con el número */
+  .hero-stat-num   { font-size: 24px; }
+  .hero-stat-label { margin-top: 0; font-size: 14px; align-self: center; }
+
+  /* Secciones */
+  section { padding: 50px 16px; }
+
+  /* Quiénes somos */
+  .about-box    { padding: 28px 20px; }
+  .about-box h2 { font-size: 28px; }
+
+  /* Servicios */
+  .cards { flex-direction: column; align-items: center; }
+  .card  { width: 90%; max-width: 320px; }
+
+  /* Beneficios */
+  .benefits-container { gap: 16px; }
+  .benefit            { width: 45%; min-width: 140px; }
+
+  /* Testimonios */
+  .chat-bubble { max-width: 88%; font-size: 15px; padding: 16px 20px; }
+
+  /* Agenda */
+  .agenda h2        { font-size: 32px; }
+  .agenda-subtitle  { font-size: 15px; }
+  .agenda-card      { padding: 28px 20px; }
+  .agenda-card h3   { font-size: 26px; }
+
+  /* Footer compacto — solo íconos */
+  .footer-fixed {
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Safari */
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    gap: 16px;
+    margin: 0;
   }
 
-  /* 4. Achicamos los "burbujones" gigantes (Quiénes somos y Agenda) */
-  .about-box {
-    padding: 28px 20px !important;
-  }
-  
-  .about-box h2 { 
-    font-size: 28px !important; 
-  }
-
-  .agenda-card {
-    padding: 28px 20px !important;
+  .social {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    padding: 0;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
-  /* 5. Ajuste a los testimonios para que se lean de una pasada */
-  .chat-bubble {
-    padding: 16px 20px !important;
-    font-size: 15px !important;
-  }
+  .social span        { display: none; }
+
+  .social-wsp i   { color: #25D366; font-size: 28px; }
+  .social-ig i    { color: #E1306C; font-size: 26px; }
+  .social-gmail i { color: #EA4335; font-size: 24px; }
 }
- 
-/* =========================
-   RESPONSIVE CELULAR CHICO
-========================= */
+
+
+/* ============================================================
+   25. RESPONSIVE — MÓVIL S (≤ 480px)
+============================================================ */
 @media (max-width: 480px) {
-  section { padding: 36px 16px; }
-  .hero-text h1 { font-size: 30px; }
-  .hero-sub { font-size: 15px; }
-  .hero-img-real { width: 230px; }
-  .nav a { font-size: 14px; }
-  .benefit { width: 100%; max-width: 280px; }
-  .benefit i { font-size: 32px; }
-  .chat-bubble { font-size: 14px; padding: 14px 18px; }
-  .agenda h2 { font-size: 28px; }
-  .agenda-icon { width: 75px; height: 75px; }
-  .agenda-icon i { font-size: 30px; }
-  .social { min-width: 48px; height: 48px; padding: 0 14px; }
-  .social i { font-size: 20px; }
+  section         { padding: 36px 16px; }
+  .hero-text h1   { font-size: 30px; }
+  .hero-sub       { font-size: 15px; }
+  .hero-img-real  { width: 230px; }
+  .nav a          { font-size: 14px; }
+  .benefit        { width: 100%; max-width: 280px; }
+  .benefit i      { font-size: 32px; }
+  .chat-bubble    { font-size: 14px; padding: 14px 18px; }
+  .agenda h2      { font-size: 28px; }
+  .agenda-icon    { width: 75px; height: 75px; }
+  .agenda-icon i  { font-size: 30px; }
+  .social         { min-width: 48px; height: 48px; padding: 0 14px; }
+  .social i       { font-size: 20px; }
 }

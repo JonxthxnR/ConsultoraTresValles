@@ -3,84 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- =============================================
+       SEO
+       título dinámico: el JS lo reemplaza con
+       "{Categoría} | Consultora Tres Valles"
+  ============================================= -->
+  <meta name="description" content="Explora los cursos, asesorías y capacitaciones de Consultora Tres Valles. Formación práctica y personalizada.">
+  <meta name="robots" content="index, follow">
+
+  <!-- =============================================
+       OPEN GRAPH
+  ============================================= -->
+  <meta property="og:title" content="Detalle | Consultora Tres Valles">
+  <meta property="og:description" content="Explora nuestros cursos, asesorías y capacitaciones profesionales.">
+  <meta property="og:image" content="https://consultoratresvalles.cl/assets/logo/Logo.png">
+  <meta property="og:url" content="https://consultoratresvalles.cl/detalle.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CL">
+
   <title>Detalle | Consultora Tres Valles</title>
+
+  <!-- =============================================
+       FUENTES — preconnect reduce latencia.
+       El @import en detalle.css queda como
+       fallback, pero estos <link> son más rápidos.
+  ============================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+
   <link rel="stylesheet" href="detalle.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
+  <!-- =============================================
+       HEADER
+       back-link con aria-label explícito para
+       que lectores de pantalla anuncien destino.
+  ============================================= -->
   <header class="detail-header">
-    <a href="index.html" class="back-link">
+    <a
+      href="index.html"
+      class="back-link"
+      aria-label="Volver al inicio de Consultora Tres Valles">
       <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
       <span>Volver al inicio</span>
     </a>
   </header>
 
   <main>
-    <section class="detail-top">
-      <div class="category-switcher">
-      <button class="switch-btn" data-type="cursos">Cursos</button>
-      <button class="switch-btn" data-type="asesorias">Asesorías</button>
-      <button class="switch-btn" data-type="capacitaciones">Capacitaciones</button>
-</div>
+
+    <!-- =============================================
+         SECCIÓN TOP — switcher de categorías
+         role="group" + aria-label agrupa los botones
+         para lectores de pantalla.
+         El botón activo inicial lo asigna el JS
+         según el parámetro ?tipo= de la URL.
+    ============================================= -->
+    <section class="detail-top" aria-label="Selección de categoría">
+      <div
+        class="category-switcher"
+        role="group"
+        aria-label="Categorías de servicios">
+        <button class="switch-btn" type="button" data-type="cursos">Cursos</button>
+        <button class="switch-btn" type="button" data-type="asesorias">Asesorías</button>
+        <button class="switch-btn" type="button" data-type="capacitaciones">Capacitaciones</button>
+      </div>
     </section>
 
-    <section class="carousel-section">
+    <!-- =============================================
+         CARRUSEL 3D
+         aria-label en la sección describe su función.
+         aria-live="polite" en el track notifica a
+         lectores de pantalla cuando el contenido
+         cambia sin recargar la página.
+         Las flechas tienen aria-label descriptivos.
+    ============================================= -->
+    <section
+      class="carousel-section"
+      aria-label="Carrusel de servicios">
+
       <div class="carousel-shell">
-        <button class="carousel-arrow" id="prevBtn" type="button" aria-label="Anterior">
+
+        <button
+          class="carousel-arrow"
+          id="prevBtn"
+          type="button"
+          aria-label="Ver servicio anterior">
           <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
         </button>
+
         <div class="carousel-stage">
-          <div class="carousel-glow"></div>
-          <div class="carousel-ring"></div>
-          <div class="carousel-floor"></div>
+          <!-- Elementos decorativos: ocultos a AT -->
+          <div class="carousel-glow"    aria-hidden="true"></div>
+          <div class="carousel-ring"    aria-hidden="true"></div>
+          <div class="carousel-floor"   aria-hidden="true"></div>
+
           <div class="carousel-viewport">
-            <div class="carousel-track" id="carouselTrack"></div>
+            <!--
+              aria-live="polite": anuncia cambios al
+              lector de pantalla sin interrumpir.
+              aria-atomic="true": lee el bloque completo,
+              no solo el nodo que cambió.
+            -->
+            <div
+              class="carousel-track"
+              id="carouselTrack"
+              aria-live="polite"
+              aria-atomic="true">
+            </div>
           </div>
         </div>
-        <button class="carousel-arrow" id="nextBtn" type="button" aria-label="Siguiente">
+
+        <button
+          class="carousel-arrow"
+          id="nextBtn"
+          type="button"
+          aria-label="Ver siguiente servicio">
           <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
         </button>
+
       </div>
-      <div class="carousel-indicators" id="carouselIndicators"></div>
+
+      <!-- Indicadores (puntitos) — generados por JS -->
+      <div
+        class="carousel-indicators"
+        id="carouselIndicators"
+        role="tablist"
+        aria-label="Indicadores de posición del carrusel">
+      </div>
+
     </section>
 
-    <section class="info-section">
-      <div class="info-box" id="infoBox">
+    <!-- =============================================
+         INFO-BOX
+         aria-live="polite": cuando el JS actualiza
+         el contenido al cambiar de tarjeta, el lector
+         de pantalla anuncia el nuevo ítem sin
+         interrumpir lo que ya estaba leyendo.
+         Los elementos con id son los targets del JS.
+    ============================================= -->
+    <section
+      class="info-section"
+      aria-label="Detalle del servicio seleccionado">
+
+      <div
+        class="info-box"
+        id="infoBox"
+        aria-live="polite"
+        aria-atomic="true">
+
         <div class="info-header">
+          <!-- &nbsp; como placeholder evita colapso de altura antes de que el JS cargue -->
           <p class="info-mini-tag" id="infoMiniTag">&nbsp;</p>
           <h2 id="infoTitle">&nbsp;</h2>
           <p class="info-description" id="infoDescription">&nbsp;</p>
         </div>
-        <div class="info-meta">
-          <div class="meta-card">
+
+        <!-- Meta-cards: duración, modalidad, nivel -->
+        <div class="info-meta" role="list" aria-label="Características del servicio">
+
+          <div class="meta-card" role="listitem">
             <i class="fa-regular fa-clock" aria-hidden="true"></i>
             <h3>Duración</h3>
             <p id="infoDuration">-</p>
           </div>
-          <div class="meta-card">
+
+          <div class="meta-card" role="listitem">
             <i class="fa-solid fa-laptop" aria-hidden="true"></i>
             <h3>Modalidad</h3>
             <p id="infoMode">-</p>
           </div>
-          <div class="meta-card">
+
+          <div class="meta-card" role="listitem">
             <i class="fa-solid fa-signal" aria-hidden="true"></i>
             <h3>Nivel</h3>
             <p id="infoLevel">-</p>
           </div>
+
         </div>
+
+        <!-- Beneficios — lista generada por JS -->
         <div class="info-benefits">
           <h3>¿Qué obtendrás?</h3>
-          <ul id="infoBenefits"></ul>
+          <ul id="infoBenefits" aria-label="Beneficios incluidos"></ul>
         </div>
+
+        <!-- CTA — href dinámico generado por JS con mensaje WA -->
         <div class="info-actions">
-          <a id="infoButton" href="#" target="_blank" rel="noopener noreferrer" class="primary-btn">
+          <a
+            id="infoButton"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="primary-btn"
+            aria-label="Consultar por este servicio vía WhatsApp (abre en nueva pestaña)">
             Consultar ahora
           </a>
         </div>
+
       </div>
     </section>
+
   </main>
+
+  <!-- script al final del body: bloqueo de render nulo -->
   <script src="detalle.js"></script>
+
 </body>
 </html>

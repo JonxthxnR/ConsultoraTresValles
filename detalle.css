@@ -1,45 +1,102 @@
-/* =========================
-   SCROLL SUAVE
-========================= */
+/* ============================================================
+   detalle.css — Consultora Tres Valles
+   Página de detalle: carrusel 3D, switcher de categorías
+   e info-box de cada ítem.
+
+   ÍNDICE
+   1.  Importación de fuentes
+   2.  Variables
+   3.  Keyframes
+   4.  Base general
+   5.  Header y back-link
+   6.  Switcher de categorías
+   7.  Sección top (cabecera de categoría)
+   8.  Carrusel — shell, stage y decoración
+   9.  Carrusel — flechas
+   10. Carrusel — viewport y track
+   11. Tarjeta base
+   12. Posiciones 3D de las tarjetas
+   13. Overlay e indicadores
+   14. Info-box
+   15. Meta-cards (duración, modalidad, nivel)
+   16. Beneficios
+   17. Botón de acción
+   18. Scrollbar
+   19. Focus visible (accesibilidad de teclado)
+   20. Responsive — tablet  (≤ 992px)
+   21. Responsive — móvil   (≤ 768px)
+   22. Responsive — móvil S (≤ 480px)
+============================================================ */
+
+
+/* ============================================================
+   1. IMPORTACIÓN DE FUENTES
+   NOTA: @import debe estar al inicio del archivo para que
+   el navegador resuelva la descarga cuanto antes.
+   En producción es preferible usar <link rel="preconnect">
+   en el HTML (como ya se hace en index.html) en lugar de
+   @import, ya que @import bloquea el render hasta resolverse.
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap');
+
+
+/* ============================================================
+   2. VARIABLES
+   Se declaran solo las variables propias de detalle.css.
+   Si en el futuro se comparte un tokens.css global con
+   style.css, estas se pueden eliminar para no duplicar.
+============================================================ */
+:root {
+  --primary:       #3aa882;
+  --primary-dark:  #2a8a68;
+
+  --text:          #0d2218;
+  --text-soft:     rgba(13, 34, 24, 0.6);
+  --white:         #ffffff;
+
+  --radius-md:     12px;
+  --radius-lg:     20px;
+
+  --shadow-soft:   0 6px 18px rgba(0, 0, 0, 0.08);
+  --shadow-md:     0 10px 30px rgba(0, 0, 0, 0.1);
+
+  --transition:    all 0.3s ease;
+
+  /**
+   * Duración de la animación de transición del carrusel.
+   * IMPORTANTE: este valor debe coincidir con ANIMATION_DURATION
+   * definido en detalle.js (720ms). Si se cambia aquí,
+   * actualizarlo también allá.
+   */
+  --carousel-duration: 0.72s;
+}
+
+
+/* ============================================================
+   3. KEYFRAMES
+============================================================ */
+
+/** Gradiente animado del fondo — idéntico al de style.css */
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+
+/* ============================================================
+   4. BASE GENERAL
+============================================================ */
 html {
   scroll-behavior: smooth;
 }
 
-/* =========================
-   FUENTES
-========================= */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap');
-
-
-/* =========================
-   VARIABLES de esta pagina
-========================= */
-:root {
-  --primary: #3aa882;
-  --primary-dark: #2a8a68;
-  --bg: #d6eee5;
-  --text: #0d2218;
-  --text-soft: rgba(13,34,24,0.6);
-  --white: #ffffff;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --transition: all .3s ease;
-  --shadow-soft: 0 6px 18px rgba(0,0,0,.08);
-  --shadow-md: 0 10px 30px rgba(0,0,0,.1);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* =========================
-   GRADIENTE ANIMADO — mismo que index
-========================= */
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* =========================
-   BASE GENERAL
-========================= */
 body {
   margin: 0;
   font-family: 'Outfit', Arial, sans-serif;
@@ -48,6 +105,7 @@ body {
   animation: gradientShift 10s ease infinite;
   color: var(--text);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 {
@@ -55,41 +113,71 @@ h1, h2, h3 {
   font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-/* =========================
-   HEADER
-========================= */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+}
+
+
+/* ============================================================
+   5. HEADER Y BACK-LINK
+============================================================ */
 .detail-header {
   padding: 16px 28px;
   position: sticky;
   top: 0;
-  z-index: 9999; /* Máximo nivel */
-  background: rgba(255,255,255,0.7);
+  z-index: 200;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(58,168,130,0.15);
-  /* Fix para que el 3D del carrusel no lo atraviese */
-  transform: translateZ(10000px); 
+  -webkit-backdrop-filter: blur(14px); /* Safari */
+  border-bottom: 1px solid rgba(58, 168, 130, 0.15);
+
+  /*
+   * El contexto de apilamiento 3D del carrusel (perspective +
+   * transform-style: preserve-3d) puede hacer que las tarjetas
+   * "atraviesen" el header. Este isolation: isolate crea un
+   * nuevo contexto de apilamiento sin alterar el z-index,
+   * evitando el artefacto visual. Es más correcto que
+   * translateZ(10000px), que era una solución de fuerza bruta.
+   */
+  isolation: isolate;
 }
 
 .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: var(--text);
   text-decoration: none;
   font-weight: 600;
   font-family: 'Outfit', Arial, sans-serif;
   font-size: 15px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   transition: color 0.3s ease;
+  /* Área mínima de toque: 44×44px recomendado por WCAG */
+  min-height: 44px;
 }
 
 .back-link:hover {
   color: var(--primary);
 }
 
+.back-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ============================================================
+   6. SWITCHER DE CATEGORÍAS
+============================================================ */
 .category-switcher {
   display: inline-flex;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 6px;
   border-radius: 999px;
   border: 1px solid rgba(58, 168, 130, 0.2);
@@ -102,12 +190,16 @@ h1, h2, h3 {
   background: transparent;
   padding: 8px 20px;
   border-radius: 999px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Outfit', Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-soft);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Área mínima de toque */
+  min-height: 44px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .switch-btn:hover {
@@ -121,21 +213,28 @@ h1, h2, h3 {
   box-shadow: 0 4px 12px rgba(58, 168, 130, 0.25);
 }
 
-/* =========================
-   TOP — cabecera de categoría
-========================= */
+.switch-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   7. SECCIÓN TOP — cabecera de categoría
+============================================================ */
 .detail-top {
   text-align: center;
   padding: 60px 20px 30px;
 }
 
+/** Badge de categoría (si se usa en el HTML) */
 .detail-badge {
   display: inline-block;
   margin-bottom: 12px;
   padding: 7px 18px;
   border-radius: 999px;
-  background: rgba(58,168,130,0.12);
-  border: 1px solid rgba(58,168,130,0.25);
+  background: rgba(58, 168, 130, 0.12);
+  border: 1px solid rgba(58, 168, 130, 0.25);
   color: var(--primary-dark);
   font-size: 13px;
   font-weight: 600;
@@ -146,8 +245,8 @@ h1, h2, h3 {
 .detail-top h1 {
   margin: 0 0 12px;
   font-size: 48px;
-  color: var(--text);
   font-weight: 700;
+  color: var(--text);
 }
 
 .detail-subtitle {
@@ -159,9 +258,10 @@ h1, h2, h3 {
   font-family: 'Outfit', Arial, sans-serif;
 }
 
-/* =========================
-   CARRUSEL
-========================= */
+
+/* ============================================================
+   8. CARRUSEL — shell, stage y decoración
+============================================================ */
 .carousel-section {
   padding: 30px 20px;
   overflow: hidden;
@@ -186,7 +286,7 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
-/* Fondo decorativo — colores del logo */
+/** Halo de luz detrás del carrusel */
 .carousel-glow {
   position: absolute;
   width: 520px;
@@ -194,26 +294,30 @@ h1, h2, h3 {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(58,168,130,0.18) 0%,
-    rgba(58,168,130,0.07) 35%,
+    rgba(58, 168, 130, 0.18) 0%,
+    rgba(58, 168, 130, 0.07) 35%,
     transparent 72%
   );
   filter: blur(24px);
   z-index: 0;
+  pointer-events: none;
 }
 
+/** Anillo decorativo */
 .carousel-ring {
   position: absolute;
   width: 380px;
   height: 380px;
   border-radius: 50%;
-  border: 1px solid rgba(58,168,130,0.15);
+  border: 1px solid rgba(58, 168, 130, 0.15);
   box-shadow:
-    0 0 30px rgba(58,168,130,0.08),
-    inset 0 0 25px rgba(255,255,255,0.04);
+    0 0 30px rgba(58, 168, 130, 0.08),
+    inset 0 0 25px rgba(255, 255, 255, 0.04);
   z-index: 0;
+  pointer-events: none;
 }
 
+/** Reflejo de suelo */
 .carousel-floor {
   position: absolute;
   bottom: 28px;
@@ -221,30 +325,43 @@ h1, h2, h3 {
   height: 70px;
   background: radial-gradient(
     ellipse at center,
-    rgba(255,255,255,0.25) 0%,
-    rgba(148,163,184,0.05) 38%,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(148, 163, 184, 0.05) 38%,
     transparent 75%
   );
   filter: blur(10px);
   border-radius: 50%;
   z-index: 0;
+  pointer-events: none;
 }
 
-/* Botones de navegación */
+
+/* ============================================================
+   9. CARRUSEL — FLECHAS DE NAVEGACIÓN
+============================================================ */
 .carousel-arrow {
   width: 56px;
   height: 56px;
-  border: none;
   border-radius: 50%;
-  background: rgba(255,255,255,0.65);
+  /*
+   * Se declara border dos veces en el original (conflicto).
+   * La propiedad shorthand "border: none" sobreescribía el
+   * border detallado que venía después. Aquí se unifica.
+   */
+  border: 1px solid rgba(58, 168, 130, 0.2);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(58,168,130,0.2);
+  -webkit-backdrop-filter: blur(10px);
   color: var(--text);
   font-size: 20px;
   cursor: pointer;
-  transition: var(--transition);
   z-index: 10;
   box-shadow: var(--shadow-soft);
+  transition: var(--transition);
+  /* Centrado del ícono */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-arrow:hover {
@@ -255,7 +372,15 @@ h1, h2, h3 {
   box-shadow: var(--shadow-md);
 }
 
-/* Viewport y track */
+.carousel-arrow:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+
+/* ============================================================
+   10. CARRUSEL — VIEWPORT Y TRACK
+============================================================ */
 .carousel-viewport {
   position: relative;
   width: 100%;
@@ -277,26 +402,35 @@ h1, h2, h3 {
   transform-style: preserve-3d;
 }
 
-/* =========================
-   CARD BASE
-========================= */
+
+/* ============================================================
+   11. TARJETA BASE
+============================================================ */
 .carousel-card {
   position: absolute;
   width: 240px;
   height: 360px;
   border-radius: 28px;
   overflow: hidden;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   user-select: none;
   cursor: pointer;
   transform-origin: center center;
-  transition:
-    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.72s ease,
-    filter 0.72s ease,
-    box-shadow 0.72s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  /*
+   * will-change declara las propiedades que cambiarán,
+   * permitiendo al navegador crear una capa GPU por adelantado.
+   * Reduce jank durante las transiciones 3D.
+   * No abusar: cada elemento con will-change consume memoria.
+   */
   will-change: transform, opacity, filter;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+  transition:
+    transform  var(--carousel-duration) cubic-bezier(0.22, 1, 0.36, 1),
+    opacity    var(--carousel-duration) ease,
+    filter     var(--carousel-duration) ease,
+    box-shadow var(--carousel-duration) ease;
 }
 
 .carousel-card img {
@@ -307,19 +441,31 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-/* =========================
-   POSICIONES DEL CARRUSEL
-========================= */
+/** Outline de foco para navegación por teclado (tabindex="0") */
+.carousel-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+
+/* ============================================================
+   12. POSICIONES 3D DE LAS TARJETAS
+   Cada clase representa un slot del carrusel.
+   El JS asigna estas clases según getCircularDiff().
+============================================================ */
+
+/** Tarjeta activa — centro del carrusel */
 .carousel-card.is-center {
   transform: translateX(0) translateZ(170px) scale(1.08);
   opacity: 1;
   z-index: 6;
   filter: saturate(1.02) brightness(1);
   box-shadow:
-    0 8px 18px rgba(0,0,0,.1),
-    0 0 24px rgba(58,168,130,0.22);
+    0 8px 18px rgba(0, 0, 0, 0.1),
+    0 0 24px rgba(58, 168, 130, 0.22);
 }
 
+/** Inmediata a la izquierda */
 .carousel-card.is-left-1 {
   transform: translateX(-220px) rotateY(28deg) translateZ(40px) scale(0.96);
   opacity: 0.92;
@@ -327,6 +473,7 @@ h1, h2, h3 {
   filter: brightness(0.9) saturate(0.92);
 }
 
+/** Inmediata a la derecha */
 .carousel-card.is-right-1 {
   transform: translateX(220px) rotateY(-28deg) translateZ(40px) scale(0.96);
   opacity: 0.92;
@@ -334,6 +481,7 @@ h1, h2, h3 {
   filter: brightness(0.9) saturate(0.92);
 }
 
+/** Segunda posición a la izquierda (solo con total > 4) */
 .carousel-card.is-left-2 {
   transform: translateX(-400px) rotateY(40deg) translateZ(-90px) scale(0.78);
   opacity: 0.45;
@@ -341,6 +489,7 @@ h1, h2, h3 {
   filter: brightness(0.65) blur(1px);
 }
 
+/** Segunda posición a la derecha (solo con total > 4) */
 .carousel-card.is-right-2 {
   transform: translateX(400px) rotateY(-40deg) translateZ(-90px) scale(0.78);
   opacity: 0.45;
@@ -348,6 +497,7 @@ h1, h2, h3 {
   filter: brightness(0.65) blur(1px);
 }
 
+/** Tarjetas fuera del rango visible */
 .carousel-card.is-hidden {
   transform: translateX(0) translateZ(-220px) scale(0.55);
   opacity: 0;
@@ -356,17 +506,18 @@ h1, h2, h3 {
   filter: blur(4px);
 }
 
-/* Overlay de la card */
+
+/* ============================================================
+   13. OVERLAY DE TARJETA E INDICADORES
+============================================================ */
 .card-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: auto 0 0 0; /* shorthand para bottom/left/right: 0, top: auto */
   padding: 20px 16px 16px;
   background: linear-gradient(
     to top,
-    rgba(13,34,24,0.75),
-    rgba(58,168,130,0.15),
+    rgba(13, 34, 24, 0.75),
+    rgba(58, 168, 130, 0.15),
     transparent
   );
 }
@@ -376,8 +527,8 @@ h1, h2, h3 {
   margin-bottom: 8px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(58,168,130,0.25);
-  border: 1px solid rgba(58,168,130,0.4);
+  background: rgba(58, 168, 130, 0.25);
+  border: 1px solid rgba(58, 168, 130, 0.4);
   font-size: 12px;
   color: #e2f5ef;
   font-family: 'Outfit', Arial, sans-serif;
@@ -390,7 +541,7 @@ h1, h2, h3 {
   color: var(--white);
 }
 
-/* Indicadores */
+/** Fila de puntitos debajo del carrusel */
 .carousel-indicators {
   display: flex;
   justify-content: center;
@@ -402,21 +553,51 @@ h1, h2, h3 {
   width: 12px;
   height: 12px;
   border-radius: 999px;
-  background: rgba(13,34,24,0.18);
+  background: rgba(13, 34, 24, 0.18);
   border: none;
   cursor: pointer;
+  /* Área mínima de toque */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   transition: all 0.3s ease;
+  background: transparent;
 }
 
-.carousel-indicator.active {
+/**
+ * El punto visible se construye con ::after para mantener
+ * el área de toque de 44px en el <button> sin agrandar
+ * visualmente el indicador.
+ */
+.carousel-indicator::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(13, 34, 24, 0.18);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.carousel-indicator.active::after {
   width: 34px;
   background: var(--primary);
-  box-shadow: 0 0 14px rgba(58,168,130,0.3);
+  box-shadow: 0 0 14px rgba(58, 168, 130, 0.3);
 }
 
-/* =========================
-   INFO BOX
-========================= */
+.carousel-indicator:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+
+/* ============================================================
+   14. INFO-BOX
+============================================================ */
 .info-section {
   padding: 30px 20px 80px;
 }
@@ -424,12 +605,18 @@ h1, h2, h3 {
 .info-box {
   max-width: 1100px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.62);
+  background: rgba(255, 255, 255, 0.62);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(58,168,130,0.18);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(58, 168, 130, 0.18);
   border-radius: 28px;
   padding: 40px 36px;
   box-shadow: var(--shadow-md);
+  /*
+   * La transición de opacity/transform la controla el JS
+   * (animateInfoBox). Solo declaramos la propiedad base aquí
+   * para evitar que el navegador rechace el override inline.
+   */
   transition: opacity 0.22s ease, transform 0.22s ease;
 }
 
@@ -438,13 +625,14 @@ h1, h2, h3 {
   margin-bottom: 28px;
 }
 
+/** Mini-tag de categoría dentro del info-box */
 .info-mini-tag {
   display: inline-block;
   margin: 0 0 10px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(58,168,130,0.12);
-  border: 1px solid rgba(58,168,130,0.25);
+  background: rgba(58, 168, 130, 0.12);
+  border: 1px solid rgba(58, 168, 130, 0.25);
   color: var(--primary-dark);
   font-size: 13px;
   font-weight: 600;
@@ -466,7 +654,10 @@ h1, h2, h3 {
   font-family: 'Outfit', Arial, sans-serif;
 }
 
-/* Meta cards — duración, modalidad, nivel */
+
+/* ============================================================
+   15. META-CARDS (duración, modalidad, nivel)
+============================================================ */
 .info-meta {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -475,9 +666,10 @@ h1, h2, h3 {
 }
 
 .meta-card {
-  background: rgba(255,255,255,0.55);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(58,168,130,0.15);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(58, 168, 130, 0.15);
   border-radius: var(--radius-lg);
   padding: 24px 18px;
   text-align: center;
@@ -487,7 +679,7 @@ h1, h2, h3 {
 .meta-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-soft);
-  border-color: rgba(58,168,130,0.35);
+  border-color: rgba(58, 168, 130, 0.35);
 }
 
 .meta-card i {
@@ -510,7 +702,10 @@ h1, h2, h3 {
   font-size: 15px;
 }
 
-/* Beneficios */
+
+/* ============================================================
+   16. BENEFICIOS
+============================================================ */
 .info-benefits {
   margin-top: 20px;
 }
@@ -532,20 +727,22 @@ h1, h2, h3 {
 }
 
 .info-benefits li {
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(58,168,130,0.15);
-  border-radius: var(--radius-md);
-  padding: 14px 20px;
-  color: var(--text-soft);
-  line-height: 1.6;
-  font-family: 'Outfit', Arial, sans-serif;
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(58, 168, 130, 0.15);
+  border-radius: var(--radius-md);
+  color: var(--text-soft);
+  line-height: 1.6;
+  font-family: 'Outfit', Arial, sans-serif;
   transition: var(--transition);
 }
 
+/** Punto decorativo generado con CSS en lugar de icono extra */
 .info-benefits li::before {
   content: '';
   width: 8px;
@@ -556,11 +753,14 @@ h1, h2, h3 {
 }
 
 .info-benefits li:hover {
-  border-color: rgba(58,168,130,0.35);
-  background: rgba(255,255,255,0.75);
+  border-color: rgba(58, 168, 130, 0.35);
+  background: rgba(255, 255, 255, 0.75);
 }
 
-/* Botón de acción */
+
+/* ============================================================
+   17. BOTÓN DE ACCIÓN
+============================================================ */
 .info-actions {
   text-align: center;
   margin-top: 32px;
@@ -576,85 +776,136 @@ h1, h2, h3 {
   font-weight: 700;
   font-size: 16px;
   font-family: 'Outfit', Arial, sans-serif;
+  box-shadow: 0 4px 16px rgba(58, 168, 130, 0.3);
   transition: var(--transition);
-  box-shadow: 0 4px 16px rgba(58,168,130,0.3);
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
 }
 
 .primary-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(58,168,130,0.4);
+  box-shadow: 0 8px 24px rgba(58, 168, 130, 0.4);
 }
 
-/* =========================
-   SCROLLBAR
-========================= */
-::-webkit-scrollbar { width: 8px; }
+.primary-btn:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 3px;
+}
+
+
+/* ============================================================
+   18. SCROLLBAR
+============================================================ */
+::-webkit-scrollbar       { width: 8px; }
 ::-webkit-scrollbar-track { background: #c8e6da; }
 ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
 
-/* =========================
-   RESPONSIVE TABLET
-========================= */
+
+/* ============================================================
+   19. FOCUS VISIBLE — navegación por teclado
+   Reglas globales de fallback para cualquier elemento
+   interactivo sin :focus-visible específico.
+============================================================ */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Elimina outline redundante en clics con ratón */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ============================================================
+   20. RESPONSIVE — TABLET (≤ 992px)
+============================================================ */
 @media (max-width: 992px) {
   .carousel-stage { height: 500px; }
-  .carousel-card { width: 210px; height: 320px; }
-  .carousel-card.is-left-1 { transform: translateX(-170px) rotateY(26deg) translateZ(25px) scale(0.9); }
+  .carousel-card  { width: 210px; height: 320px; }
+
+  .carousel-card.is-left-1  { transform: translateX(-170px) rotateY(26deg) translateZ(25px) scale(0.9); }
   .carousel-card.is-right-1 { transform: translateX(170px) rotateY(-26deg) translateZ(25px) scale(0.9); }
-  .carousel-card.is-left-2 { transform: translateX(-300px) rotateY(38deg) translateZ(-90px) scale(0.72); }
+  .carousel-card.is-left-2  { transform: translateX(-300px) rotateY(38deg) translateZ(-90px) scale(0.72); }
   .carousel-card.is-right-2 { transform: translateX(300px) rotateY(-38deg) translateZ(-90px) scale(0.72); }
+
+  /* Meta-cards en columna única para evitar aplastamiento */
   .info-meta { grid-template-columns: 1fr; }
 }
 
-/* =========================
-   RESPONSIVE CELULAR
-========================= */
+
+/* ============================================================
+   21. RESPONSIVE — MÓVIL (≤ 768px)
+============================================================ */
 @media (max-width: 768px) {
-  .detail-top h1 { font-size: 32px; }
-  .detail-subtitle { font-size: 15px; }
+  .detail-top h1    { font-size: 32px; }
+  .detail-subtitle  { font-size: 15px; }
+
   .carousel-shell { grid-template-columns: 50px 1fr 50px; }
   .carousel-stage { height: 380px; }
-  .carousel-glow { width: 260px; height: 260px; }
+  .carousel-glow  { width: 260px; height: 260px; }
   .carousel-floor { width: 300px; height: 60px; bottom: 28px; }
-  .carousel-card { width: 165px; height: 245px; }
-  .carousel-card.is-center { transform: translateX(0) translateZ(90px) scale(1.05); }
-  .carousel-card.is-left-1 { transform: translateX(-120px) rotateY(24deg) translateZ(10px) scale(0.82); }
+  .carousel-card  { width: 165px; height: 245px; }
+
+  .carousel-card.is-center  { transform: translateX(0) translateZ(90px) scale(1.05); }
+  .carousel-card.is-left-1  { transform: translateX(-120px) rotateY(24deg) translateZ(10px) scale(0.82); }
   .carousel-card.is-right-1 { transform: translateX(120px) rotateY(-24deg) translateZ(10px) scale(0.82); }
+
+  /* Las tarjetas de segunda fila se ocultan en móvil para no saturar */
   .carousel-card.is-left-2,
   .carousel-card.is-right-2 { opacity: 0; pointer-events: none; }
+
   .card-overlay h3 { font-size: 18px; }
-  .info-box { padding: 26px 18px; }
+
+  .info-box      { padding: 26px 18px; }
   .info-header h2 { font-size: 28px; }
   .info-benefits h3 { font-size: 24px; }
+
+  /*
+   * Switcher horizontal con scroll interno.
+   * La píldora mantiene su forma; los botones deslizan
+   * dentro sin romper el layout.
+   */
   .category-switcher {
-    display: flex;         /* Cambiamos inline-flex por flex */
-    width: max-content;           /* Toma el ancho completo disponible */
+    display: flex;
+    width: max-content;
     max-width: 100%;
     margin: 0 auto;
-    overflow-x: auto;      /* Permite deslizar hacia los lados por DENTRO de la píldora */
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iPhone */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 6px;
+    /* Oculta scrollbar visual pero mantiene funcionalidad */
+    scrollbar-width: none;
   }
-  .category-switcher::-webkit-scrollbar { display: none; } /* Oculta la barra de desplazamiento en Chrome */
+
+  .category-switcher::-webkit-scrollbar { display: none; }
+
   .switch-btn {
-    white-space: nowrap;   /* Obliga a que el texto no baje de línea */
-    flex-shrink: 0;        /* Evita que los botones se apachurren */
-    padding: 8px 14px;     /* Le bajamos un pelín el padding a los lados */
-    font-size: 13px;       /* Un pixel menos para que quepa mejor */
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 8px 14px;
+    font-size: 13px;
   }
 }
 
-/* =========================
-   RESPONSIVE CELULAR CHICO
-========================= */
+
+/* ============================================================
+   22. RESPONSIVE — MÓVIL S (≤ 480px)
+============================================================ */
 @media (max-width: 480px) {
-  .detail-top { padding: 40px 16px 20px; }
+  .detail-top    { padding: 40px 16px 20px; }
   .detail-top h1 { font-size: 26px; }
+
   .carousel-shell { grid-template-columns: 44px 1fr 44px; }
   .carousel-arrow { width: 44px; height: 44px; font-size: 16px; }
-  .info-box { padding: 20px 14px; }
-  .primary-btn { width: 100%; text-align: center; }
+
+  .info-box   { padding: 20px 14px; }
+
+  /* Botón ocupa todo el ancho en pantallas pequeñas */
+  .primary-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    /* Se elimina box-sizing: border-box redundante
+       porque ya está en el reset global *::before/after */
+  }
 }
